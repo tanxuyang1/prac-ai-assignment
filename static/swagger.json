@@ -15,26 +15,20 @@
       "/api/v1/analysis/": {
         "get": {
           "summary": "Analyze Image",
-          "description": "Analyze an image by providing its URI and get the extracted text.",
+          "description": "Analyze an image by providing its URI as a query parameter and get the extracted text.",
           "operationId": "analyzeImage",
-          "requestBody": {
-            "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "uri": {
-                      "type": "string",
-                      "description": "The URI of the image to be analyzed.",
-                      "example": "https://example.com/image.jpg"
-                    }
-                  },
-                  "required": ["uri"]
-                }
+          "parameters": [
+            {
+              "name": "uri",
+              "in": "query",
+              "required": true,
+              "description": "The URI of the image to be analyzed.",
+              "schema": {
+                "type": "string",
+                "example": "https://example.com/image.jpg"
               }
             }
-          },
+          ],
           "responses": {
             "200": {
               "description": "Successful response with extracted text.",
@@ -56,17 +50,17 @@
               }
             },
             "400": {
-              "description": "Bad Request. Missing URI in the JSON body.",
+              "description": "Bad Request. Missing or invalid query parameter.",
               "content": {
                 "application/json": {
                   "example": {
-                    "error": "Missing URI in JSON"
+                    "error": "Missing URI in query parameters"
                   }
                 }
               }
             },
             "500": {
-              "description": "Internal Server Error. Error occurred during processing.",
+              "description": "Internal Server Error. An error occurred during processing.",
               "content": {
                 "application/json": {
                   "example": {

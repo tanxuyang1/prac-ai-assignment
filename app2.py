@@ -1,3 +1,4 @@
+# Using Swagger to run API
 from flask import Flask, request, jsonify, render_template
 from analyze import read_image
 from flask_swagger_ui import get_swaggerui_blueprint
@@ -34,11 +35,11 @@ def home():
 @app.route("/api/v1/analysis/", methods=['GET'])
 def analysis():
     # Try to get the URI from the JSON
-    try:
-        get_json = request.get_json()
-        image_uri = get_json['uri']
-    except:
-        return jsonify({'error': 'Missing URI in JSON'}), 400
+    image_uri = request.args.get('uri')
+    
+    # If 'uri' is missing, return a 400 error
+    if not image_uri:
+        return jsonify({'error': 'Missing URI in query parameters'}), 400
     
     # Try to get the text from the image
     try:
